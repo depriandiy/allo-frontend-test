@@ -14,16 +14,25 @@ In this assignment, you’re assigned to create a website that displays rockets.
 Use the Launch Library 2 API by The Space Devs for rocket data.
 Docs: https://thespacedevs.com/llapi
 
-Rocket list (returns 13 SpaceX rockets in a single request):
+Rocket list (returns all 13 SpaceX rockets in a single request):
 
-    GET https://lldev.thespacedevs.com/2.2.0/config/launcher/?manufacturer__name=SpaceX&mode=detailed
+    GET https://lldev.thespacedevs.com/2.2.0/config/launcher/?manufacturer__name=SpaceX&mode=detailed&limit=20
 
 Single rocket:
 
     GET https://lldev.thespacedevs.com/2.2.0/config/launcher/:id/
 
 `mode=detailed` is required — without it the response omits `description`
-and the other detail fields.
+and the other detail fields. `limit=20` is required too — the default page size
+is 10, so without it you get 10 rockets and a `next` page instead of all 13.
+
+**API version:** use `2.2.0` as shown above. The docs site now showcases
+`2.3.0`, but `2.2.0` is still live with no announced end-of-life, and the field
+names in the table below are the `2.2.0` ones. Don't migrate: `2.3.0` renames
+the endpoint to `/2.3.0/launcher_configurations/` and moves several of these
+fields (`image_url` becomes `image.image_url`, `manufacturer.country_code`
+becomes a `manufacturer.country` array). Both versions return the same 13
+rockets.
 
 | Requirement      | Field                              |
 | ---------------- | ---------------------------------- |
