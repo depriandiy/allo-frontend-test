@@ -52,7 +52,7 @@
       />
     </div>
 
-    <div v-if="rocketStore.loading">
+    <!-- <div v-if="rocketStore.loading">
       <v-row>
         <v-col
           v-for="index in 6"
@@ -66,9 +66,11 @@
           />
         </v-col>
       </v-row>
-    </div>
+    </div> -->
 
-    <div v-else-if="rocketStore.error">
+    <LoadingState v-if="rocketStore.loading" />
+
+    <!-- <div v-else-if="rocketStore.error">
       <v-alert
         type="error"
         variant="tonal"
@@ -83,8 +85,14 @@
       >
         Retry
       </v-btn>
-    </div>
+    </div> -->
 
+    <ErrorState
+      v-else-if="rocketStore.error"
+      :message="rocketStore.error"
+      @retry="rocketStore.fetchRockets"
+    />
+    
     <div v-else>
       <p class="mb-4 text-medium-emphasis">
         {{ rocketStore.filteredRockets.length }} rockets found
@@ -127,6 +135,9 @@
 <script lang="ts" setup>
   import { onMounted } from 'vue'
 
+  import ErrorState from '@/components/ErrorState.vue'
+  import EmptyState from '@/components/EmptyState.vue'
+  import LoadingState from '@/components/LoadingState.vue'
   import AddRocketForm from '@/components/AddRocketForm.vue'
   import RocketSearch from '@/components/RocketSearch.vue'
   import RocketCard from '@/components/RocketCard.vue'
