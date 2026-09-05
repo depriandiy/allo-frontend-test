@@ -1,39 +1,4 @@
 <template>
-  <!-- <v-container class="py-8">
-    <h1 class="mb-6">
-      SpaceX Rockets
-    </h1>
-
-    <div v-if="rocketStore.loading">
-      Loading rockets...
-    </div>
-
-    <div v-else-if="rocketStore.error">
-      <p>{{ rocketStore.error }}</p>
-
-      <v-btn
-        class="mt-4"
-        @click="rocketStore.fetchRockets"
-      >
-        Retry
-      </v-btn>
-    </div>
-
-    <div v-else>
-      <p class="mb-4">
-        Total rockets: {{ rocketStore.rockets.length }}
-      </p>
-
-      <div
-        v-for="rocket in rocketStore.rockets"
-        :key="rocket.id"
-        class="mb-4"
-      >
-        {{ rocket.full_name }}
-      </div>
-    </div>
-  </v-container> -->
-
   <v-container class="py-8">
     <div class="mb-8">
       <h1 class="text-h4 font-weight-bold">
@@ -52,47 +17,14 @@
       />
     </div>
 
-    <!-- <div v-if="rocketStore.loading">
-      <v-row>
-        <v-col
-          v-for="index in 6"
-          :key="index"
-          cols="12"
-          sm="6"
-          md="4"
-        >
-          <v-skeleton-loader
-            type="image, heading, paragraph"
-          />
-        </v-col>
-      </v-row>
-    </div> -->
-
     <LoadingState v-if="rocketStore.loading" />
-
-    <!-- <div v-else-if="rocketStore.error">
-      <v-alert
-        type="error"
-        variant="tonal"
-      >
-        {{ rocketStore.error }}
-      </v-alert>
-
-      <v-btn
-        class="mt-4"
-        color="primary"
-        @click="rocketStore.fetchRockets"
-      >
-        Retry
-      </v-btn>
-    </div> -->
 
     <ErrorState
       v-else-if="rocketStore.error"
       :message="rocketStore.error"
       @retry="rocketStore.fetchRockets"
     />
-    
+
     <div v-else>
       <p class="mb-4 text-medium-emphasis">
         {{ rocketStore.filteredRockets.length }} rockets found

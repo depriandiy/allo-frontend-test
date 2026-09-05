@@ -28,7 +28,7 @@
       {{ rocket.full_name }}
     </v-card-title>
 
-    <v-card-text class="flex-grow-1">
+    <v-card-text class="flex-grow-1 rocket-description">
       {{
         rocket.description || 'No description available.'
       }}
@@ -51,3 +51,12 @@
     router.push(`/rockets/${props.rocket.id}`)
   }
 </script>
+
+<style scoped>
+.rocket-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>
