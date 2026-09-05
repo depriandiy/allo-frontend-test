@@ -44,6 +44,8 @@
         Explore SpaceX rocket configurations.
       </p>
 
+      <AddRocketForm />
+
       <RocketSearch
         v-model="rocketStore.searchQuery"
         class="my-6"
@@ -125,6 +127,7 @@
 <script lang="ts" setup>
   import { onMounted } from 'vue'
 
+  import AddRocketForm from '@/components/AddRocketForm.vue'
   import RocketSearch from '@/components/RocketSearch.vue'
   import RocketCard from '@/components/RocketCard.vue'
   import { useRocketStore } from '@/stores/rocket'
