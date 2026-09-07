@@ -1,18 +1,52 @@
-<script lang="ts" setup>
-import { onMounted } from 'vue'
+<script setup lang="ts">
+import { onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useRocketStore } from '@/stores/rocket'
 import RocketCard from '@/components/RocketCard.vue'
+import RocketFilters from '@/components/RocketFilters.vue'
 import LoadingState from '@/components/LoadingState.vue'
 import ErrorState from '@/components/ErrorState.vue'
 import EmptyState from '@/components/EmptyState.vue'
 
+const route = useRoute()
+const router = useRouter()
 const rocketStore = useRocketStore()
 
 onMounted(() => {
+  const search = route.query.search
+  const country = route.query.country
+  const sort = route.query.sort
+
+  rocketStore.searchQuery = typeof search === 'string' ? search : ''
+  rocketStore.countryFilter = typeof country === 'string' ? country : 'all'
+  rocketStore.sortBy =
+    sort === 'name-desc' ||
+    sort === 'cost-high' ||
+    sort === 'cost-low'
+      ? sort
+      : 'name-asc'
+
   if (!rocketStore.rockets.length) {
     rocketStore.fetchRockets()
   }
 })
+
+watch(
+  () => [
+    rocketStore.searchQuery,
+    rocketStore.countryFilter,
+    rocketStore.sortBy,
+  ],
+  ([search, country, sort]) => {
+    router.replace({
+      query: {
+        ...(search ? { search } : {}),
+        ...(country !== 'all' ? { country } : {}),
+        ...(sort !== 'name-asc' ? { sort } : {}),
+      },
+    })
+  },
+)
 </script>
 
 <template>
@@ -41,6 +75,14 @@ onMounted(() => {
     />
 
     <template v-else>
+      <RocketFilters
+        v-model:search-query="rocketStore.searchQuery"
+        v-model:country-filter="rocketStore.countryFilter"
+        v-model:sort-by="rocketStore.sortBy"
+        :countries="rocketStore.countryOptions"
+        @reset="rocketStore.resetFilters"
+      />
+      
       <div class="d-flex align-center justify-space-between mb-4">
         <p class="text-body-2 text-medium-emphasis mb-0">
           Showing {{ rocketStore.filteredRockets.length }} rocket(s)
